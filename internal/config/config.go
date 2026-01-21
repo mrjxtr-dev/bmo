@@ -6,11 +6,14 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/mrjxtr-dev/bmo/internal/services"
 )
 
 type Config struct {
 	Port       string
 	ExchageAPI string
+
+	ExchangeRate float64
 }
 
 func LoadConfig() (*Config, error) {
@@ -24,6 +27,14 @@ func LoadConfig() (*Config, error) {
 		Port:       os.Getenv("PORT"),
 		ExchageAPI: os.Getenv("EXCHANGE_API"),
 	}
+
+	er := &services.ExchangeRates{}
+	rate, err := er.GetExchangeRate(cfg.ExchageAPI)
+	if err != nil {
+		return nil, err
+	}
+
+	cfg.ExchangeRate = rate
 
 	return cfg, nil
 }
