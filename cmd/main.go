@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"log/slog"
 	"net/http"
@@ -16,6 +15,7 @@ func main() {
 	if err != nil {
 		slog.Error("failed to load config", err)
 	}
+	slog.Info("config loaded", "env", cfg.ENV)
 
 	r := chi.NewRouter()
 	srv := http.Server{
@@ -24,13 +24,10 @@ func main() {
 	}
 
 	go func() {
-		slog.Info("server started")
-		slog.Info("server started")
+		slog.Info("server started", "url", "http://localhost:"+cfg.Port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatal(err)
 		}
 		slog.Info("server closed")
 	}()
-
-	fmt.Println(cfg.ExchangeRate)
 }
