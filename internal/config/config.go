@@ -10,7 +10,9 @@ import (
 )
 
 type Config struct {
-	Port       string
+	Port string
+	ENV  string
+
 	ExchageAPI string
 
 	ExchangeRate float64
@@ -25,6 +27,7 @@ func LoadConfig() (*Config, error) {
 
 	cfg := &Config{
 		Port:       os.Getenv("PORT"),
+		ENV:        os.Getenv("ENV"),
 		ExchageAPI: os.Getenv("EXCHANGE_API"),
 	}
 
